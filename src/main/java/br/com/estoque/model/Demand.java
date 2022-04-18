@@ -1,8 +1,12 @@
 package br.com.estoque.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "demand")
@@ -13,12 +17,17 @@ public class Demand implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @ManyToOne
-    @JoinColumn(name="client_id", nullable=false)
+    @JoinColumn(name = "client_id")
     private Client client;
-    
-    @OneToOne(cascade=CascadeType.ALL, mappedBy = "demand")
+
+    @ManyToMany
+    @JoinTable(name = "demand_product",
+            joinColumns =  @JoinColumn (name = "demand_id"),
+    inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private Set<Product> products;
+
     private ShoppingCar shopping;
     
     private boolean budget;

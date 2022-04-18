@@ -1,17 +1,19 @@
 package br.com.estoque.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "tb_product")
-@Getter
-@Setter
+@Table(name = "product")
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -24,25 +26,9 @@ public class Product implements Serializable {
     @Column
     private int weightProdut;
 
-    public Product() {
-    }
+    @ManyToMany(mappedBy = "products")
+    private Set<Demand> demands;
 
-    public Product(Integer id, String nameProdut, int weightProdut) {
-        this.id = id;
-        this.nameProduct = nameProdut;
-        this.weightProdut = weightProdut;
-    }
+    private ShoppingCar shoppingCar;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return id.equals(product.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
