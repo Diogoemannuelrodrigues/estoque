@@ -1,10 +1,7 @@
 package br.com.estoque.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,6 +25,8 @@ public class Demand implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products;
 
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "shoppingCar_id")
     private ShoppingCar shopping;
     
     private boolean budget;

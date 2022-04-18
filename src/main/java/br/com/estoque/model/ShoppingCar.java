@@ -22,7 +22,7 @@ public class ShoppingCar implements Serializable {
 	@Column(name = "id")
 	private Integer id;
 
-
+	@OneToOne(mappedBy = "shopping")
 	private Demand demand;
 
 	@ManyToMany(mappedBy = "shoppingCars")
