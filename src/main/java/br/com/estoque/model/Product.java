@@ -29,6 +29,10 @@ public class Product implements Serializable {
     @ManyToMany(mappedBy = "products")
     private Set<Demand> demands;
 
-    private ShoppingCar shoppingCar;
+    @ManyToMany
+    @JoinTable(name = "product_shoppingCar",
+            joinColumns =  @JoinColumn (name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "shoppingCar_id"))
+    private Set<ShoppingCar> shoppingCars;
 
 }
