@@ -1,22 +1,20 @@
 package br.com.estoque.service;
 
-import br.com.estoque.model.Product;
-import br.com.estoque.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectRetrievalFailureException;
+import org.springframework.stereotype.Service;
+
+import br.com.estoque.model.Product;
+import br.com.estoque.repository.ProductRepository;
 
 @Service
 public class ProductService {
 
-    private ProductRepository productRepository;
-
     @Autowired
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    private ProductRepository productRepository;
 
     public Product searchProduct(Integer idProduct) {
         Optional<Product> product = productRepository.findById(idProduct);
@@ -32,8 +30,11 @@ public class ProductService {
     }
 
     public Product alterProduct(Product product) {
-        Optional<Product> product1 = productRepository.findById(product.getIdProdut());
-        return productRepository.save(product);
+        Optional<Product> product1 = productRepository.findById(product.getId());
+        if(product1.isPresent()) {
+        	return productRepository.save(product1.get());
+        }
+        throw new ObjectRetrievalFailureException(getClass(), product1); 
     }
 
     public List<Product> listProducts(){
