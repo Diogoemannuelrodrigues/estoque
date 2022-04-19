@@ -24,6 +24,10 @@ public class Product implements Serializable {
     private String nameProduct;
     @Column
     private int weightProdut;
+    @Column
+    private String descriptions;
+    @Column
+    private Double price;
 
     @ManyToMany(mappedBy = "products")
     private Set<Demand> demands;

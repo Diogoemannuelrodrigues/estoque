@@ -30,11 +30,7 @@ public class ProductService {
     }
 
     public Product alterProduct(Product product) {
-        Optional<Product> product1 = productRepository.findById(product.getId());
-        if(product1.isPresent()) {
-        	return productRepository.save(product1.get());
-        }
-        throw new ObjectRetrievalFailureException(getClass(), product1); 
+        return productRepository.save(product);
     }
 
     public List<Product> listProducts(){
