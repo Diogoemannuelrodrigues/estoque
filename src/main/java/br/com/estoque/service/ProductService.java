@@ -1,7 +1,7 @@
 package br.com.estoque.service;
 
 import br.com.estoque.config.BaseService;
-import br.com.estoque.exceptions.ProductNortFoundException;
+import br.com.estoque.exceptions.ProductNotFoundException;
 import br.com.estoque.model.DTO.ProductDTO;
 import br.com.estoque.model.Product;
 import br.com.estoque.repository.ProductRepository;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -41,10 +40,10 @@ public class ProductService extends BaseService {
             productFound.get().setPrice(productDTO.getPrice());
             productFound.get().setDescriptions(productDTO.getDescriptions());
             productFound.get().setWeightProdut(productDTO.getWeightProdut());
+            log.info("{}, ", productFound);
+            return productRepository.save(productFound.get());
         }
-        log.info("{}, ", productFound);
-        return productRepository.save(productFound.get());
-
+        throw new ProductNotFoundException("Product not found");
     }
 
     public List<Product> listProducts(){
