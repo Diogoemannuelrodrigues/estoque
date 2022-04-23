@@ -1,9 +1,12 @@
 package br.com.estoque.controller;
 
+import br.com.estoque.config.BaseService;
+import br.com.estoque.model.DTO.ProductDTO;
 import br.com.estoque.model.Product;
 import br.com.estoque.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,16 +22,15 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-
     @PostMapping
-    public ResponseEntity<Void> saveProduto (@RequestBody Product product){
-        productService.saveProduct(product);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(product.getId())
-                .toUri();
-        log.info("Saving {} to database", product.getNameProduct());
-        return ResponseEntity.created(uri).build();
+    public ResponseEntity<ProductDTO> saveProduto (@RequestBody ProductDTO productDTO){
+        productService.saveProduct(productDTO);
+//        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(product.getId())
+//                .toUri();
+//        log.info("Saving {} to database", product.getNameProduct());
+        return ResponseEntity.status(HttpStatus.OK).body(productDTO);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -38,8 +40,8 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Product> alterProduct (@RequestBody Product product){
-        Product productAlt = productService.alterProduct(product);
+    public ResponseEntity<Product> alterProduct (@PathVariable Integer id, @RequestBody ProductDTO productDTO){
+        Product productAlt = productService.updateProduct(id, productDTO);
         return ResponseEntity.ok().body(productAlt);
     }
 

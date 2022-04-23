@@ -1,41 +1,54 @@
 package br.com.estoque.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.stereotype.Service;
-
+import br.com.estoque.config.BaseService;
+import br.com.estoque.exceptions.ProductNortFoundException;
+import br.com.estoque.model.DTO.ProductDTO;
 import br.com.estoque.model.Product;
 import br.com.estoque.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Slf4j
 @Service
-public class ProductService {
+public class ProductService extends BaseService {
 
     @Autowired
     private ProductRepository productRepository;
+    private Object ProductDTO;
 
     public Product searchProduct(Integer idProduct) {
         Optional<Product> product = productRepository.findById(idProduct);
         return product.orElse(null);
     }
 
-    public Product saveProduct(Product product){
-        return productRepository.save(product);
+    public Product saveProduct(ProductDTO productDTO){
+        return productRepository.save(getConverter().map(productDTO, Product.class));
     }
 
     public void deleteProduct(Integer idProd) {
         productRepository.deleteById(idProd);
     }
 
-    public Product alterProduct(Product product) {
-        return productRepository.save(product);
+    public Product updateProduct(Integer id, ProductDTO productDTO) {
+        Optional<Product> productFound = productRepository.findById(id);
+        if(productFound.isPresent()){
+            productFound.get().setNameProduct(productDTO.getNameProduct());
+            productFound.get().setPrice(productDTO.getPrice());
+            productFound.get().setDescriptions(productDTO.getDescriptions());
+            productFound.get().setWeightProdut(productDTO.getWeightProdut());
+        }
+        log.info("{}, ", productFound);
+        return productRepository.save(productFound.get());
+
     }
 
     public List<Product> listProducts(){
-        List<Product> products = productRepository.findAll();
-        return products;
+        return productRepository.findAll();
     }
 
 }

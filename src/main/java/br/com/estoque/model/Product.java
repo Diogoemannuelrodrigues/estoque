@@ -20,12 +20,16 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column
     private String nameProduct;
+
     @Column
     private int weightProdut;
+
     @Column
     private String descriptions;
+
     @Column
     private Double price;
 
