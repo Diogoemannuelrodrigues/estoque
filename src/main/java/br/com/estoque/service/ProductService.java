@@ -18,7 +18,6 @@ public class ProductService extends BaseService {
 
     @Autowired
     private ProductRepository productRepository;
-    private Object ProductDTO;
 
     public Product searchProduct(Integer idProduct) {
         Optional<Product> product = productRepository.findById(idProduct);

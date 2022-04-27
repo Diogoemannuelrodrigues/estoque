@@ -25,11 +25,6 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductDTO> saveProduto (@RequestBody ProductDTO productDTO){
         productService.saveProduct(productDTO);
-//        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .path("/{id}")
-//                .buildAndExpand(product.getId())
-//                .toUri();
-//        log.info("Saving {} to database", product.getNameProduct());
         return ResponseEntity.status(HttpStatus.OK).body(productDTO);
     }
 
@@ -52,7 +47,7 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Product> listarClientes(){
+    public List<Product> listarProducts(){
         List<Product> products = productService.listProducts();
         return products;
     }

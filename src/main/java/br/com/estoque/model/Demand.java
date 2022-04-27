@@ -1,10 +1,18 @@
 package br.com.estoque.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.Set;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "demand")
 public class Demand implements Serializable {
@@ -31,58 +39,12 @@ public class Demand implements Serializable {
     
     private boolean budget;
 
-    public Demand() {
+    public Double getCalculateTotalCar(){
+        Double total = null;
+        for (Product product: products) {
+            total+=product.getPrice();
+        }
+        return total;
     }
 
-    public Demand(Integer idDemand, Client idClient, ShoppingCar shopping, boolean budget) {
-        this.id = idDemand;
-        this.client = idClient;
-        this.shopping = shopping;
-        this.budget = budget;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public ShoppingCar getShopping() {
-        return shopping;
-    }
-
-    public void setShopping(ShoppingCar shopping) {
-        this.shopping = shopping;
-    }
-
-    public boolean isBudget() {
-        return budget;
-    }
-
-    public void setBudget(boolean budget) {
-        this.budget = budget;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Demand demand = (Demand) o;
-        return id.equals(demand.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

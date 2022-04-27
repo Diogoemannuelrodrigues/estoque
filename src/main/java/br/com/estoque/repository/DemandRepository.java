@@ -1,9 +1,9 @@
 package br.com.estoque.repository;
 
-import br.com.estoque.model.Product;
+import br.com.estoque.model.Demand;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer> {
+public interface DemandRepository extends JpaRepository<Demand, Integer> {
 }
